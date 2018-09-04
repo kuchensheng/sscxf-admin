@@ -102,7 +102,7 @@
 </body>
 </html>
 <script>
-	var ipport="http://localhost:20100"
+	var ipport="http://localhost:20101"
 $('#login_btn').on('click', function(){
 	     var num=0;
 		 var str="";
@@ -135,7 +135,7 @@ $('#login_btn').on('click', function(){
                       debugger;
                       layer.close(index);
 				  }else {
-				      layer.alert(data.message,{
+				      layer.alert(result.message,{
 				          title:'提示框',
 						  icon:2,
 					  });
