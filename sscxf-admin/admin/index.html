@@ -236,7 +236,7 @@ var userId = $.session.get('userId');
     },
 	function(){
         $.ajax({
-            url :'http://localhost:20100/app/login/info/'+userId,
+            url :'http://localhost:20100/app/user/login/info/'+userId,
             type :'DELETE',
             success : function(result) {
                 if(result.code == 'success') {
