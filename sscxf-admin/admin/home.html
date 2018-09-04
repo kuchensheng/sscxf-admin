@@ -22,7 +22,18 @@
 		<script src="assets/js/jquery.min.js"></script>        
 		<!-- <![endif]-->
            	<script src="assets/dist/echarts.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>            
+        <script src="assets/js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var userId = $.session.get('userId');
+            userId = 1
+            //获取本次和上次登录信息
+            $.get("http://localhost:20101/app/login/list",{"userId":userId,"pageNum":1,"pageSize":2},function (result) {
+                console.log(result);
+            })
+        })
+    </script>
        <title></title>
        </head>		
 <body>
