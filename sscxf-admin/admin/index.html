@@ -45,8 +45,7 @@
 <script type="text/javascript">	
  $(function(){
      var requestId = $.session.get('sessionId');
-     console.log("sessionId="+requestId);
-     $.get("http://localhost:20101/app/login/info",{"JSESSIONID":requestId},function (result) {
+     $.get("http://localhost:20100/app/login/info",{"JSESSIONID":requestId},function (result) {
 		 if(result.code != 'success') {
              layer.alert('尚未登录请重新登陆！',{
                  title: '提示框',
@@ -229,7 +228,9 @@ $('.change_Password').on('click', function(){
     });
 });
 var userId = $.session.get('userId');
-userId = 1
+if(null == userId) {
+    userId = 1;
+}
   $('#Exit_system').on('click', function(){
       layer.confirm('是否确定退出系统？', {
      btn: ['是','否'] ,//按钮
@@ -237,7 +238,7 @@ userId = 1
     },
 	function(){
         $.ajax({
-            url :'http://localhost:20101/app/user/login/'+userId,
+            url :'http://localhost:20100/app/user/login/'+userId,
             type :'DELETE',
             success : function(result) {
                 if(result.code == 'success') {

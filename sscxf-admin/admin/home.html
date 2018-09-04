@@ -27,10 +27,15 @@
     <script type="text/javascript">
         $(function () {
             var userId = $.session.get('userId');
-            userId = 1
             //获取本次和上次登录信息
-            $.get("http://localhost:20101/app/login/list",{"userId":userId,"pageNum":1,"pageSize":2},function (result) {
+            $.get("http://localhost:20100/app/login/list",{"userId":userId,"pageNum":1,"pageSize":2},function (result) {
                 console.log(result);
+                if(result.code == 'success') {
+                    var obj = result.data.items[0];
+                    $(".loginTime").html(obj.loginTime);
+                    $(".loginIp").html(obj.clientIp);
+                    $(".loginAddr").html(obj.address);
+                }
             })
         })
     </script>
@@ -40,18 +45,18 @@
 <div class="page-content clearfix">
  <div class="alert alert-block alert-success">
   <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-  <i class="icon-ok green"></i>欢迎使用<strong class="green">后台管理系统<small>(v1.2)</small></strong>,你本次登录时间为2016年7月12日13时34分，登录IP:192.168.1.110.	
+     <i class="icon-ok green"></i>欢迎使用<strong class="green">后台管理系统<small>(v1.2)</small></strong>,你本次登录时间为<cite class="loginTime">2016年7月12日13时34分</cite>，登录IP:<cite class="loginIp">192.168.1.110</cite>,登陆地址:<cite class="loginAddr">内网地址</cite>.
  </div>
  <div class="state-overview clearfix">
                   <div class="col-lg-3 col-sm-6">
                       <section class="panel">
-                      <a href="#" title="商城会员">
+                      <a href="#" title="会员">
                           <div class="symbol terques">
                              <i class="icon-user"></i>
                           </div>
                           <div class="value">
                               <h1>34522</h1>
-                              <p>商城用户</p>
+                              <p>用户数量</p>
                           </div>
                           </a>
                       </section>
