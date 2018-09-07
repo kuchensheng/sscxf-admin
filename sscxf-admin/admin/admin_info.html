@@ -34,7 +34,7 @@
                     $(".email").val(obj.email);
                     $(".qq").val(obj.qq);
                     $(".status").html(obj.status);
-                    $(".registerTime").html(new Date(obj.createTime));
+                    $(".registerTime").html(timeStamp2String(obj.createTime));
                 }
             });
         })
