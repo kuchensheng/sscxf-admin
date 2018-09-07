@@ -28,7 +28,7 @@
         $(function () {
             var userId = $.session.get('userId');
             //获取本次和上次登录信息
-            $.get("http://localhost:20100/app/login/list",{"userId":userId,"pageNum":1,"pageSize":2},function (result) {
+            $.get("http://118.178.186.33:20101/app/login/list",{"userId":userId,"pageNum":1,"pageSize":2},function (result) {
                 console.log(result);
                 if(result.code == 'success') {
                     var obj = result.data.items[0];

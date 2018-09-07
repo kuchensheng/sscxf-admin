@@ -45,7 +45,7 @@
 <script type="text/javascript">	
  $(function(){
      var requestId = $.session.get('sessionId');
-     $.get("http://localhost:20100/app/login/info",{"JSESSIONID":requestId},function (result) {
+     $.get("http://118.178.186.33:20101/app/login/info",{"JSESSIONID":requestId},function (result) {
 		 if(result.code != 'success') {
              layer.alert('尚未登录请重新登陆！',{
                  title: '提示框',
@@ -238,7 +238,7 @@ if(null == userId) {
     },
 	function(){
         $.ajax({
-            url :'http://localhost:20100/app/user/login/'+userId,
+            url :'http://118.178.186.33:20101/app/user/login/'+userId,
             type :'DELETE',
             success : function(result) {
                 if(result.code == 'success') {
