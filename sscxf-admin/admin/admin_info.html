@@ -24,7 +24,7 @@
     <script type="text/javascript">
         $(function () {
             var userId = $.session.get('userId');
-            $.get("http://localhost:20100/app/user/"+userId,function (result) {
+            $.get("http://118.178.186.33:20101/app/user/"+userId,function (result) {
                 if(result.code == 'success') {
                     var obj = result.data;
                     $(".username").val(obj.name);
@@ -96,8 +96,8 @@
       <tr class="text-c">
         <th width="25"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
         <th width="80">ID</th>
-        <th width="80">类型</th>
-        <th width="80">内容</th>
+        <th width="85">类型</th>
+        <th width="85">结果</th>
         <th width="30%">登录地点</th>
         <th width="100">用户名</th>
         <th width="125">客户端IP</th>
@@ -105,16 +105,7 @@
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-            <td>1</td>
-            <td>WEBSITE</td>
-            <td>SUCCESS</td>
-            <td>浙江省杭州市移动</td>
-            <td>admin</td>
-            <td>127.0.0.1</td>
-            <td>2018-09-04</td>
-        </tr>
+
     </tbody>
   </table>
     </div>
@@ -237,52 +228,57 @@ function save_info(){
 <script>
     jQuery(function($) {
         var userId = $.session.get('userId');
-        var oTable1 = $('#sample-table').dataTable( {
+        var oTable1 = $('#sample-table').DataTable({
             "aLengthMenu":[10,20,30],
-            "bPaginate":true,
-            "bInfo":true,
-            "paging":true,
+            // "bPaginate":true,
+            // "bInfo":true,
+            // "paging":true,
             "searching":false,
-            "ordering":false,
+            // "ordering":false,
             "serverSide":true,
             ajax: {
                 url:"http://118.178.186.33:20101/app/login/list",
                 type:"GET",
-                data:{"userId":userId},
+                data:function (d){
+                    for(var key in d){
+                        if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){ //以columns开头的参数删除
+                            delete d[key];
+                        }
+                    }
+                    var params = {}
+                    params.userId = userId
+                    params.pageNum = d.start/10 + 1
+                    params.pageSize = d.length
+                    return params
+                },//{"userId": userId},
                 dataType:"json",
-                success:function (result) {
+                dataFilter: function (result) {
+                    console.log(result)
+                    result = JSON.parse(result)
                     var returnData = {};
                     returnData.draw = result.page;//这里直接自行返回了draw计数器,应该由后台返回
                     returnData.recordsTotal = result.data.total;//返回数据全部记录
                     returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
                     returnData.data = result.data.items;//返回的数据列表
-                    callback(returnData);
+                    // callback(returnData);
+                    return JSON.stringify(returnData)
                 }
             },
-//            $.get("http://118.178.186.33:20101/app/login/list",param,function(result){
-//            var returnData = {};
-//            returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-//            returnData.recordsTotal = result.data.total;//返回数据全部记录
-//            returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-//            returnData.data = result.data.items;//返回的数据列表
-//            callback(returnData);
-//        }),
-        columns:[
-            {"data":0,"render":function (data,type,full,meta) {
-                return '<label><input type="checkbox" class="ace"><span class="lbl"></span></label>';
-            }},
-            {"data":"id",},
-            {"data":"type"},
-            {"data":"result"},
-            {"data":"address"},
-            {"data":"userName"},
-            {"data":"clientIp"},
-            {"data":"logTime"}
-        ]
-    }).api();
-function callback(result) {
-
-}
+            columns:[
+                {"data":0,"render":function () {
+                        return '<label><input type="checkbox" class="ace"><span class="lbl"></span></label>';
+                    }},
+                {"data":"id",},
+                {"data":"type"},
+                {"data":"result"},
+                {"data":"address"},
+                {"data":"userName"},
+                {"data":"clientIp"},
+                {"data":"logTime","render":function (data) {
+                        return timeStamp2String(data);
+                    }}
+            ]
+        })
 
         $('table th input:checkbox').on('click' , function(){
             var that = this;
