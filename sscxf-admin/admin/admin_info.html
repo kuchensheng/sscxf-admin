@@ -150,11 +150,45 @@ function save_info(){
 		 });
 		  if(num>0){  return false;}	 	
           else{
-			  
-			   layer.alert('修改成功！',{
-               title: '提示框',				
-			   icon:1,			   		
-			  });
+		      var userId = $.session.get("userId");
+		      var param = {};
+		      param.name =$(".username").val();
+		      param.age = $(".age").val();
+		      param.status = $(".status").val();
+		      param.sex = $(".sex").val();
+		      param.phone = $(".phone").val();
+		      param.email = $(".email").val();
+		      param.qq = $(".qq").val();
+              $.ajax({
+                  url:"http://localhost:20100/app/user/"+userId,
+                  type:"PUT",
+                  data:param,
+                  dataType:"json",
+                  success:function (result) {
+                      if(result.code == "success") {
+                          if(result.data) {
+                              layer.alert('修改成功！',{
+                                  title: '提示框',
+                                  icon:1,
+                              });
+                          }else {
+                              layer.alert('修改失败！',{
+                                  title: '提示框',
+                                  icon:3,
+                              });
+                          }
+
+                      }else {
+                          layer.alert(result.message,{
+                              title: '提示框',
+                              icon:2,
+                          });
+                      }
+
+                  }
+
+              });
+
 			  $('#Personal').find('.xinxi').removeClass("hover");
 			  $('#Personal').find('.text_info').removeClass("add").attr("disabled", true);
 			  $('#Personal').find('.btn-success').css({'display':'none'});
@@ -214,11 +248,38 @@ function save_info(){
 			 });
 			 return false;
         }   
-		 else{			  
-			  layer.alert('修改成功！',{
-               title: '提示框',				
-			icon:1,		
-			  }); 
+		 else{
+		      var userId = $.session.get("userId");
+		      $.ajax({
+                  url:"http://localhost:20100/app/user/"+userId,
+                  type:"PUT",
+                  data:{"oldPassword":$("#password").val(),"password":$("#c_mew_pas").val()},
+                  dataType:"json",
+                  success:function (result) {
+                      if(result.code == "success") {
+                          if(result.data) {
+                              layer.alert('修改成功！',{
+                                  title: '提示框',
+                                  icon:1,
+                              });
+                          }else {
+                              layer.alert('修改失败！',{
+                                  title: '提示框',
+                                  icon:2,
+                              });
+                          }
+
+                      }else {
+                          layer.alert(result.message,{
+                              title: '提示框',
+                              icon:1,
+                          });
+                      }
+
+                  }
+
+              });
+
 			  layer.close(index);      
 		  }	 
 	}
