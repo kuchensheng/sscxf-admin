@@ -251,7 +251,7 @@ function save_info(){
 		 else{
 		      var userId = $.session.get("userId");
 		      $.ajax({
-                  url:"http://localhost:20100/app/user/"+userId,
+                  url:"http://118.178.186.33:20101/app/user/"+userId,
                   type:"PUT",
                   data:{"oldPassword":$("#password").val(),"password":$("#c_mew_pas").val()},
                   dataType:"json",
