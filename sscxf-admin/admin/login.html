@@ -127,12 +127,9 @@ $('#login_btn').on('click', function(){
                           title: '提示框',
                           icon:1,
                       });
-                      console.log(result);
-                      console.log(result.data.userId + "   "+result.data.sessionId);
                       $.session.set('userId',result.data.userId);
                       $.session.set('sessionId',result.data.sessionId);
                       location.href="index.html";
-                      debugger;
                       layer.close(index);
 				  }else {
 				      layer.alert(result.message,{
