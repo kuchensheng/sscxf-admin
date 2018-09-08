@@ -160,7 +160,7 @@ function save_info(){
 		      param.email = $(".email").val();
 		      param.qq = $(".qq").val();
               $.ajax({
-                  url:"http://localhost:20100/app/user/"+userId,
+                  url:"http://118.178.186.33:20100/app/user/"+userId,
                   type:"PUT",
                   data:param,
                   dataType:"json",

@@ -80,7 +80,7 @@
     });
 	  //获取菜单信息
 	 var appId = 1;
-	 $.get("http://localhost:21000/app/website/info/menu/"+appId,{"area":"MENU_LEFT"},function (result) {
+	 $.get("http://118.178.186.33:21000/app/website/info/menu/"+appId,{"area":"MENU_LEFT"},function (result) {
 		 if(result.code == "success") {
 //		     var data = JSON.parse(result.data);
              console.log(result.data);
