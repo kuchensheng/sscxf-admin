@@ -112,7 +112,6 @@
          }else if(type == "MENU_DOWN") {
              node = '<li id=parent_'+n.id+'><a href="#" class="dropdown-toggle"><i class="'+n.icon+' "></i><span class="menu-text"> '+n.name+' </span><b class="arrow icon-angle-down"></b></a><ul class="submenu"></ul></li>'
          } else {
-             debugger;
 			 if(null != parentId) {
 			     childNode = '<li class="home"><a href="javascript:void(0)" name="'+n.url+'" title="'+n.name+'" class="iframeurl"><i class="'+n.icon+'"></i>'+n.name+'</a></li>';
 			     $("#parent_"+parentId+" .submenu").append(childNode);
