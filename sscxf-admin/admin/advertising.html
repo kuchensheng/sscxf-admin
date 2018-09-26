@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="css/style.css"/>       
+        <link rel="stylesheet" href="css/style.css"/>
         <link href="assets/css/codemirror.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/ace.min.css" />
         <link rel="stylesheet" href="font/css/font-awesome.min.css" />
@@ -15,11 +15,11 @@
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
 		<script src="js/jquery-1.9.1.min.js"></script>
-		<script src="assets/js/typeahead-bs2.min.js"></script>   
-        <script src="js/lrtk.js" type="text/javascript" ></script>		
+		<script src="assets/js/typeahead-bs2.min.js"></script>
+        <script src="js/lrtk.js" type="text/javascript" ></script>
 		<script src="assets/js/jquery.dataTables.min.js"></script>
 		<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
-        <script src="assets/layer/layer.js" type="text/javascript" ></script>          
+        <script src="assets/layer/layer.js" type="text/javascript" ></script>
         <script type="text/javascript" src="Widget/swfupload/swfupload.js"></script>
         <script type="text/javascript" src="Widget/swfupload/swfupload.queue.js"></script>
         <script type="text/javascript" src="Widget/swfupload/swfupload.speed.js"></script>
@@ -44,12 +44,12 @@
          </ul>
   </div>
   </div>
-  </div>  
+  </div>
   </div><div class="Ads_list">
    <div class="border clearfix">
        <span class="l_f">
-        <a href="javascript:ovid()" id="ads_add" class="btn btn-warning"><i class="fa fa-plus"></i> 添加广告</a>
-        <a href="javascript:ovid()" class="btn btn-danger"><i class="fa fa-trash"></i> 批量删除</a>
+        <a href="javascript:void(0)" id="ads_add" class="btn btn-warning"><i class="fa fa-plus"></i> 添加广告</a>
+        <a href="javascript:void(0)" class="btn btn-danger"><i class="fa fa-trash"></i> 批量删除</a>
        </span>
        <span class="r_f">共：<b class="totalCount">0</b>条广告</span>
      </div>
@@ -59,12 +59,12 @@
 		 <tr>
 				<th width="25"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
 				<th width="80">ID</th>
-                <th>排序</th>
+                <th width="80">排序</th>
 				<th width="100">分类</th>
 				<th width="220px">图片</th>
-				<th width="250px">链接地址</th>
+				<th>链接地址</th>
 				<th width="180px">加入时间</th>
-				<th width="70px">状态</th>                
+				<th width="70px">状态</th>
 				<th width="250px">操作</th>
 			</tr>
 		</thead>
@@ -103,26 +103,30 @@
      </li>
      <li><label class="label_name">图片</label><span class="cont_style">
  <div class="demo">
-	           <div class="logobox"><div class="resizebox"><img src="images/image.png" width="100px" alt="" height="100px"/></div></div>	
+	           <div class="logobox"><div class="resizebox"><img src="images/image.png" width="100px" alt="" height="100px"/></div></div>
                <div class="logoupload">
-                  <div class="btnbox"><a id="uploadBtnHolder" class="uploadbtn" href="javascript:;">上传替换</a></div>
+                   <span id="spanButtonPlaceholder">非得放到</span>
+                  <!--<div class="btnbox" id="uploadBtnHolder">上传替换</div>-->
+                      <!--<input id="btnUpload" type="button" value="上传文件" class="btn_scwj"/>-->
                   <div style="clear:both;height:0;overflow:hidden;"></div>
                   <div class="progress-box" style="display:none;">
                     <div class="progress-num">上传进度：<b>0%</b></div>
                     <div class="progress-bar"><div style="width:0%;" class="bar-line"></div></div>
-                  </div>  <div class="prompt"><p>图片大小小于5MB,支持.jpg;.gif;.png;.jpeg格式的图片</p></div>  
-              </div>                                
-           </div>           
+                  </div>  <div class="prompt"><p>图片大小小于5MB,支持.jpg;.gif;.png;.jpeg格式的图片</p></div>
+              </div>
+           </div>
    </span>
   </li>
- 
-  
+
+
  </ul>
  </div>
 </div>
 </body>
 </html>
 <script>
+    var appId;
+    var swfImageUpload;
     $(function () {
         var userId = $.session.get("userId");
         if(null == userId) {
@@ -132,7 +136,7 @@
             });
             location.href="login.html";
         }
-        var appId;
+
         $.get("http://118.178.186.33:20101/app/user/"+userId,function (result) {
             if(result.code == "success") {
                 var jsonResult = result.data;
@@ -145,8 +149,9 @@
                         $.each(dataArray,function (i,n) {
                             var groupName = n.groupName;
                             var groupCount=n.groupIdCount;
+                            var groupId = n.groupId;
                             total += groupCount;
-                            var liContent = '<li><i class="fa fa-image pink" data-groupId="'+n.groupId+'" data-appId="'+appId+'"></i><a href="javascript:void(0)" onClick="getRightDataList('+n.groupId+','+appId+',false)">'+groupName+'('+groupCount+')</a></li>';
+                            var liContent = '<li><i class="fa fa-image pink" data-groupId="'+groupId+'" data-appId="'+appId+'"></i><a href="javascript:void(0)" onClick="getRightDataList('+groupId+','+appId+',false)">'+groupName+'('+groupCount+')</a></li>';
                             $(".b_P_Sort_list").append(liContent);
                             $(".totalCount").text(total)
                         });
@@ -162,21 +167,73 @@
             }
         });
     });
+    SWFUpload.onload = function () {
+        var settings = {
+            flash_url : "Widget/swfupload/swfupload.swf",
+            // flash9_url : "Widget/swfupload/swfupload_fp9.swf",
+            upload_url: "http://localhost:21000/app/file/upload",// 接受上传的地址
+            file_post_name : "file",
+            file_size_limit : "5MB",// 文件大小限制
+            file_types : "*.jpg;*.gif;*.png;*.jpeg;",// 限制文件类型
+            file_types_description : "图片",// 说明，自己定义
+            file_upload_limit : 100,
+            file_queue_limit : 0,
+            // custom_settings : {uploadButtonId : 'btnUpload',},
+            debug: false,
+            // Button settings
+            button_image_url: "Widget/swfupload/upload-btn.png",
+            button_width: "95",
+            button_height: "30 ",
+            button_placeholder_id: 'spanButtonPlaceholder',
+            // button_text:'选择文件',
+            button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
+            button_cursor : SWFUpload.CURSOR.HAND,
+            button_action: SWFUpload.BUTTON_ACTION.SELECT_FILE,
+
+            moving_average_history_size: 40,
+            // The event handler functions are defined in handlers.js
+            swfupload_preload_handler : preLoad,
+            swfupload_load_failed_handler : loadFailed,
+            file_queued_handler : fileQueued,
+            file_dialog_complete_handler: fileDialogComplete,
+            upload_start_handler : function (file) {
+                initProgress();
+                updateProgress(file);
+            },
+            upload_progress_handler : function(file, bytesComplete, bytesTotal) {
+                updateProgress(file);
+            },
+            upload_success_handler : function(file, data, response) {
+                // 上传成功后处理函数
+                var fileInfo = eval("(" + data + ")");
+                successAction(fileInfo);
+            },
+            upload_error_handler : function(file, errorCode, message) {
+                alert('上传发生了错误！');
+            },
+            file_queue_error_handler : function(file, errorCode, message) {
+                if(errorCode == -110) {
+                    alert('您选择的文件太大了。');
+                }
+            }
+        };
+        swfImageUpload = new SWFUpload(settings);
+    }
 
 
 //初始化宽度、高度
- $(".widget-box").height($(window).height()); 
+ $(".widget-box").height($(window).height());
  $(".Ads_list").width($(window).width()-220);
-  //当文档窗口发生改变时 触发  
+  //当文档窗口发生改变时 触发
     $(window).resize(function(){
 	$(".widget-box").height($(window).height());
 	 $(".Ads_list").width($(window).width()-220);
 	});
-	$(function() { 
+	$(function() {
 	$("#advertising").fix({
 		float : 'left',
 		//minStatue : true,
-		skin : 'green',	
+		skin : 'green',
 		durationTime :false,
 		stylewidth:'220',
 		spacingw:30,//设置隐藏时的距离
@@ -189,30 +246,26 @@
 	function getRightDataList(groupId,appId,flag) {
 	    var jsonUrl = "http://localhost:21000/app/"+appId+"/file/list";
 	    if(!flag) {
+	        var id = groupId;
 	        $.ajax({
                 url:jsonUrl,
                 type:"GET",
-                data:function (d){
-                    for(var key in d){
-                        if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){ //以columns开头的参数删除
-                            delete d[key];
-                        }
-                    }
-                    var params = {}
-                    params.groupId = groupId
-                    return params
-                },
+                data:{"groupId":groupId},
                 dataType:"json",
                 success:function (result) {
                     var oSettings = oTable1.fnSettings();
                     oTable1.fnClearTable(this);
-                    var data = result.data.items;
+                    var data = result.data;
+                    if(data !=null) {
+                        data = data.items;
+                    }
                     if(null != data && data.length > 0) {
-                        for(var i = 0;i < result.data.items.length;i++) {
-                            oTable1.oApi._fnAddData(oSettings,result.data.items[i]);
-                        }
-                        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-                        oTable1.fnDraw()
+                        // for(var i = 0;i < result.data.items.length;i++) {
+                        //     oTable1.oApi._fnAddData(oSettings,result.data.items[i]);
+                        // }
+                        // oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                        // oTable1.fnDraw()
+                        oTable1.ajax.reload();
                     }
                 }
             });
@@ -324,43 +377,54 @@ function member_del(obj,id){
 }
 /*******添加广告*********/
  $('#ads_add').on('click', function(){
+     $('#form-field-select-1').empty();
+     $.get("http://localhost:21000/app/group/"+appId,function (result) {
+         if(result.code == "success") {
+             if(null != result.data && null != result.data.items) {
+                 $.each(result.data.items,function (i,n) {
+                     $('#form-field-select-1').append('<option value="'+n.id+'">'+n.groupName+'</option>');
+                 })
+             }
+         }
+     });
 	  layer.open({
         type: 1,
         title: '添加广告',
-		maxmin: true, 
+		maxmin: true,
 		shadeClose: false, //点击遮罩关闭层
         area : ['800px' , ''],
         content:$('#add_ads_style'),
 		btn:['提交','取消'],
-		yes:function(index,layero){	
+		yes:function(index,layero){
 		 var num=0;
 		 var str="";
      $(".add_adverts input[type$='text']").each(function(n){
           if($(this).val()=="")
           {
-               
+
 			   layer.alert(str+=""+$(this).attr("name")+"不能为空！\r\n",{
-                title: '提示框',				
-				icon:0,								
-          }); 
+                title: '提示框',
+				icon:0,
+          });
 		    num++;
-            return false;            
-          } 
+            return false;
+          }
 		 });
-		  if(num>0){  return false;}	 	
+		  if(num>0){  return false;}
           else{
 			  layer.alert('添加成功！',{
-               title: '提示框',				
-			icon:1,		
+               title: '提示框',
+			icon:1,
 			  });
-			   layer.close(index);	
-		  }		  		     				
+			   layer.close(index);
+		  }
 		}
     });
 })
 </script>
 <script type="text/javascript">
 function updateProgress(file) {
+    console.log("开始上传")
 	$('.progress-box .progress-bar > div').css('width', parseInt(file.percentUploaded) + '%');
 	$('.progress-box .progress-num > b').html(SWFUpload.speed.formatPercent(file.percentUploaded));
 	if(parseInt(file.percentUploaded) == 100) {
@@ -370,6 +434,7 @@ function updateProgress(file) {
 }
 
 function initProgress() {
+    console.log("初始化进度条");
 	$('.progress-box').show();
 	$('.progress-box .progress-bar > div').css('width', '0%');
 	$('.progress-box .progress-num > b').html('0%');
@@ -390,56 +455,4 @@ function successAction(fileInfo) {
 	$(".logobox .resizebox > img").attr('height', _up_height);
 }
 
-var swfImageUpload;
-$(document).ready(function() {
-	var settings = {
-		flash_url : "Widget/swfupload/swfupload.swf",
-		flash9_url : "Widget/swfupload/swfupload_fp9.swf",
-		upload_url: "upload.php",// 接受上传的地址
-		file_size_limit : "5MB",// 文件大小限制
-		file_types : "*.jpg;*.gif;*.png;*.jpeg;",// 限制文件类型
-		file_types_description : "图片",// 说明，自己定义
-		file_upload_limit : 100,
-		file_queue_limit : 0,
-		custom_settings : {},
-		debug: false,
-		// Button settings
-		button_image_url: "Widget/swfupload/upload-btn.png",
-		button_width: "95",
-		button_height: "30 ",
-		button_placeholder_id: 'uploadBtnHolder',
-		button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
-		button_cursor : SWFUpload.CURSOR.HAND,
-		button_action: SWFUpload.BUTTON_ACTION.SELECT_FILE,
-		
-		moving_average_history_size: 40,
-		
-		// The event handler functions are defined in handlers.js
-		swfupload_preload_handler : preLoad,
-		swfupload_load_failed_handler : loadFailed,
-		file_queued_handler : fileQueued,
-		file_dialog_complete_handler: fileDialogComplete,
-		upload_start_handler : function (file) {
-			initProgress();
-			updateProgress(file);
-		},
-		upload_progress_handler : function(file, bytesComplete, bytesTotal) {
-			updateProgress(file);
-		},
-		upload_success_handler : function(file, data, response) {
-			// 上传成功后处理函数
-			var fileInfo = eval("(" + data + ")");
-			successAction(fileInfo);
-		},
-		upload_error_handler : function(file, errorCode, message) {
-			alert('上传发生了错误！');
-		},
-		file_queue_error_handler : function(file, errorCode, message) {
-			if(errorCode == -110) {
-				alert('您选择的文件太大了。');	
-			}
-		}
-	};
-	swfImageUpload = new SWFUpload(settings);
-});
 </script>
